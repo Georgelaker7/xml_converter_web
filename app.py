@@ -36,14 +36,14 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "arrDepCode")
     ET.SubElement(transfer, "arrDepPhysicalArea").text = booking.find("ArrivalLocTo").text if booking.find("ArrivalLocTo") is not None else "N/A"
 
-    # **Διόρθωση: Καθαρίζουμε το &amp; πριν το προσθέσουμε**
+    # **Επεξεργασία του SpecificLocation ώστε να πάρουμε μόνο το όνομα του ξενοδοχείου**
     if booking.find("SpecificLocation") is not None:
-        hotel_name = booking.find("SpecificLocation").text.split(",")[0]  # Παίρνει μόνο το όνομα του ξενοδοχείου
-        hotel_name = html.unescape(hotel_name)  # Καθαρίζει τα XML escapes
+        hotel_name = booking.find("SpecificLocation").text.split(",")[0]  # Παίρνει μόνο το όνομα
+        hotel_name = html.unescape(hotel_name)  # Αποκωδικοποιεί χαρακτήρες HTML
     else:
         hotel_name = "N/A"
 
-    # Δημιουργούμε το στοιχείο **χωρίς escaping**
+    # Χρησιμοποιούμε `ET.SubElement` κανονικά αλλά διασφαλίζουμε ότι η έξοδος δεν θα κωδικοποιηθεί
     arr_dep_name = ET.SubElement(transfer, "arrDepName")
     arr_dep_name.text = hotel_name
 
@@ -65,10 +65,13 @@ def convert_xml(input_xml):
 
     ET.SubElement(transfer, "observations")
 
-    # **Αντί να χρησιμοποιήσουμε `tree.write()`, δημιουργούμε το XML χειροκίνητα**
+    # **Αντί να χρησιμοποιήσουμε `tree.write()`, γράφουμε χειροκίνητα**
     output_xml = "converted.xml"
+    xml_string = ET.tostring(transfers, encoding="unicode", short_empty_elements=False)  # Αποτρέπει αυτοκλειόμενα tags
+    xml_string = html.unescape(xml_string)  # Καθαρίζει τα escapes όπως `&amp;`
+
     with open(output_xml, "w", encoding="utf-8") as f:
-        f.write(ET.tostring(transfers, encoding="unicode"))
+        f.write(xml_string)
 
     return output_xml
 
