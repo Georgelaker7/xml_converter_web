@@ -9,7 +9,7 @@ def convert_xml(input_xml):
     root = tree.getroot()
 
     booking = root.find(".//Booking")
-    
+
     transfers = ET.Element("transfers", MessageType="Request", FechaCreacion=booking.findtext("Booking_date", "N/A"), Count="1")
     transfer = ET.SubElement(transfers, "transfer")
 
@@ -22,16 +22,30 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "carrier")
     
     ET.SubElement(transfer, "serviceType").text = booking.findtext("TransferType", "N/A")
-    ET.SubElement(transfer, "flightCompanyCode").text = booking.findtext("ArrivalFlightNumber", "N/A")[:3]  # Εξαγωγή πρώτων 3 χαρακτήρων ως κωδικός
-    ET.SubElement(transfer, "flightNumber").text = booking.findtext("ArrivalFlightNumber", "N/A")[3:]  # Αριθμός πτήσης
+
+    # Ανάκτηση σωστού Flight Company Code από το Flight Number
+    flight_number = booking.findtext("ArrivalFlightNumber", "N/A")
+    if flight_number != "N/A" and len(flight_number) > 2:
+        flight_company_code = flight_number[:3]  # Παίρνει τα πρώτα 3 γράμματα
+    else:
+        flight_company_code = "N/A"
+
+    ET.SubElement(transfer, "flightCompanyCode").text = flight_company_code
+    ET.SubElement(transfer, "flightNumber").text = flight_number[3:] if flight_number != "N/A" else "N/A"
+
     ET.SubElement(transfer, "flightDate").text = booking.findtext("ArrivalDate", "N/A")
     ET.SubElement(transfer, "flightTime").text = booking.findtext("ArrivalTime", "N/A") + ":00"
+    
+    # Διόρθωση Flight Origin και Destination
     ET.SubElement(transfer, "flightOrigin").text = booking.findtext("ArrivalAirportFrom", "N/A")
     ET.SubElement(transfer, "flightDestination").text = booking.findtext("ArrivalAirportTo", "N/A")
     
     ET.SubElement(transfer, "serviceCode")
-    ET.SubElement(transfer, "voucher").text = booking.get("ref", "N/A")  # Διαβάζει το ref του Booking ως voucher
-    
+
+    # Ανάκτηση σωστού Voucher από το Booking ref
+    voucher_number = booking.get("ref", "N/A")
+    ET.SubElement(transfer, "voucher").text = voucher_number
+
     ET.SubElement(transfer, "paxName").text = booking.findtext("Customer_name", "N/A")
     
     ET.SubElement(transfer, "arrDepCode")
@@ -45,13 +59,15 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "CHD_AGES")
     ET.SubElement(transfer, "paxINF").text = booking.findtext("Infants", "N/A")
     
+    # Διόρθωση οχήματος
     ET.SubElement(transfer, "vehicle").text = booking.findtext("Transportation_Unit", "N/A")
 
     ET.SubElement(transfer, "rep")
     ET.SubElement(transfer, "remarks")
     
     ET.SubElement(transfer, "pickupDate").text = booking.findtext("DepartureDate", "N/A")
-    ET.SubElement(transfer, "pickupTime").text = booking.findtext("DepartureTime", "N/A") + ":00"
+    pickup_time = booking.findtext("DepartureTime", "N/A")
+    ET.SubElement(transfer, "pickupTime").text = pickup_time + ":00" if pickup_time != "N/A" else "N/A"
     
     ET.SubElement(transfer, "observations")
 
