@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import xml.etree.ElementTree as ET
 import os
-import html  # Χρησιμοποιούμε αυτή τη βιβλιοθήκη για να διορθώσουμε τα &amp;
+import html
 
 app = Flask(__name__)
 
@@ -13,7 +13,6 @@ def convert_xml(input_xml):
     transfers = ET.Element("transfers", MessageType="Request", FechaCreacion=booking.find("Booking_date").text, Count="1")
     transfer = ET.SubElement(transfers, "transfer")
 
-    # Προσθήκη στοιχείων στο XML
     ET.SubElement(transfer, "result")
     ET.SubElement(transfer, "client").text = "HER"
     ET.SubElement(transfer, "ttoo").text = booking.find("Company").text if booking.find("Company") is not None else "N/A"
@@ -37,16 +36,16 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "arrDepCode")
     ET.SubElement(transfer, "arrDepPhysicalArea").text = booking.find("ArrivalLocTo").text if booking.find("ArrivalLocTo") is not None else "N/A"
 
-    # **Διόρθωση: Αφαιρεί το `&amp;` χρησιμοποιώντας `html.unescape()`**
+    # **Διόρθωση: Καθαρίζουμε το &amp; πριν το προσθέσουμε**
     if booking.find("SpecificLocation") is not None:
-        hotel_name = booking.find("SpecificLocation").text.split(",")[0]  # Παίρνει μόνο το πρώτο κομμάτι πριν το κόμμα
-        hotel_name = html.unescape(hotel_name)  # <--- Καθαρίζουμε τα XML escapes
+        hotel_name = booking.find("SpecificLocation").text.split(",")[0]  # Παίρνει μόνο το όνομα του ξενοδοχείου
+        hotel_name = html.unescape(hotel_name)  # Καθαρίζει τα XML escapes
     else:
         hotel_name = "N/A"
-    
-    # Αντί να χρησιμοποιήσουμε απλό `ET.SubElement()`, βάζουμε κείμενο χειροκίνητα
+
+    # Δημιουργούμε το στοιχείο **χωρίς escaping**
     arr_dep_name = ET.SubElement(transfer, "arrDepName")
-    arr_dep_name.text = hotel_name  # Ορίζει το κείμενο χωρίς escaping
+    arr_dep_name.text = hotel_name
 
     ET.SubElement(transfer, "arrOrder")
     ET.SubElement(transfer, "areaOrder")
@@ -66,11 +65,10 @@ def convert_xml(input_xml):
 
     ET.SubElement(transfer, "observations")
 
+    # **Αντί να χρησιμοποιήσουμε `tree.write()`, δημιουργούμε το XML χειροκίνητα**
     output_xml = "converted.xml"
-    tree = ET.ElementTree(transfers)
-    
-    # **Αποθήκευση με σωστή κωδικοποίηση UTF-8**
-    tree.write(output_xml, encoding="utf-8", xml_declaration=True)
+    with open(output_xml, "w", encoding="utf-8") as f:
+        f.write(ET.tostring(transfers, encoding="unicode"))
 
     return output_xml
 
