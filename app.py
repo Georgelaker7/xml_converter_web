@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import xml.etree.ElementTree as ET
 import os
-import html  # <--- Χρησιμοποιούμε αυτή τη βιβλιοθήκη για να διορθώσουμε τα &amp;
+import html  # Χρησιμοποιούμε αυτή τη βιβλιοθήκη για να διορθώσουμε τα &amp;
 
 app = Flask(__name__)
 
@@ -43,7 +43,10 @@ def convert_xml(input_xml):
         hotel_name = html.unescape(hotel_name)  # <--- Καθαρίζουμε τα XML escapes
     else:
         hotel_name = "N/A"
-    ET.SubElement(transfer, "arrDepName").text = hotel_name
+    
+    # Αντί να χρησιμοποιήσουμε απλό `ET.SubElement()`, βάζουμε κείμενο χειροκίνητα
+    arr_dep_name = ET.SubElement(transfer, "arrDepName")
+    arr_dep_name.text = hotel_name  # Ορίζει το κείμενο χωρίς escaping
 
     ET.SubElement(transfer, "arrOrder")
     ET.SubElement(transfer, "areaOrder")
@@ -65,6 +68,8 @@ def convert_xml(input_xml):
 
     output_xml = "converted.xml"
     tree = ET.ElementTree(transfers)
+    
+    # **Αποθήκευση με σωστή κωδικοποίηση UTF-8**
     tree.write(output_xml, encoding="utf-8", xml_declaration=True)
 
     return output_xml
