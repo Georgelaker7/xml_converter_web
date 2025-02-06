@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+
+<A2BBkConfirmation>
+
+<Booking ref='H1916939'>
+
+<Version>2.0</Version>
+
+<Booking_Status>OR</Booking_Status>
+
+<Company>RH</Company>
+
+<Booking_date>29/01/2025</Booking_date>
+
+<Customer_name>Mrs Claire Wood</Customer_name>
+
+<CustomerMobile>4407775795283</CustomerMobile>
+
+<NumberOfUnits>1</NumberOfUnits>
+
+<Transportation_Unit>Private transfer (1  -3 people)</Transportation_Unit>
+
+<TransferType>BOTH</TransferType>
+
+<ArrivalLocFrom>Heraklion Intl. Airport (HER)</ArrivalLocFrom>
+
+<ArrivalLocTo>Limenas Chersonisou</ArrivalLocTo>
+
+<ArrivalDate>02/05/2025</ArrivalDate>
+
+<ArrivalTime>13:30</ArrivalTime>
+
+<ArrivalAirportFrom>LGW</ArrivalAirportFrom>
+
+<ArrivalAirportTo>LGW</ArrivalAirportTo>
+
+<ArrivalFlightNumber>EZY8215</ArrivalFlightNumber>
+
+<DepartureLocFrom>Limenas Chersonisou</DepartureLocFrom>
+
+<DepartureLocTo>Heraklion Intl. Airport (HER)</DepartureLocTo>
+
+<DepartureDate>08/05/2025</DepartureDate>
+
+<DepartureTime>11:30</DepartureTime>
+
+<DepartureAirportFrom>LGW</DepartureAirportFrom>
+
+<DepartureAirportTo>LGW</DepartureAirportTo>
+
+<DepartureFlightNumber>EZY8216</DepartureFlightNumber>
+
+<SpecificLocation>Akasha Beach Hotel &amp;amp;amp; Spa, Eleftheriou Venizelou, Limenas Chersonisou, Greece</SpecificLocation>
+
+<AdditionalAddressInfo1></AdditionalAddressInfo1>
+
+<AdditionalAddressInfo2>2</AdditionalAddressInfo2>
+
+<Passengers>2</Passengers>
+
+<Adults>2</Adults>
+
+<Children>0</Children>
+
+<Infants>0</Infants>
+
+<Children_Age></Children_Age>
+
+<Requests></Requests>
+
+<Price>64</Price>
+
+<PickupDate></PickupDate>
+
+<PickupTime></PickupTime>
+
+<Agency></Agency>
+
+</Booking>
+
+</A2BBkConfirmation>
+

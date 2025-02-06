@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<P2PConfirmation>
+
+<Booking ref='R2022497'>
+
+<Version>1.0</Version>
+
+<Booking_Status>OR</Booking_Status>
+
+<Company>HOPPA</Company>
+
+<Booking_date>03/02/2025</Booking_date>
+
+<Customer_name>Miss SABRINA SBOLGI</Customer_name>
+
+<CustomerMobile>393332292156</CustomerMobile>
+
+<NumberOfVehicles>1</NumberOfVehicles>
+
+<Vehicle>Mercedes E Class Max (1 - 3 people)</Vehicle>
+
+<TransferType>RETURN</TransferType>
+
+<Journey1>
+
+<StartingPointType>AP</StartingPointType>
+
+<From>Heraklion Intl. Airport (HER)</From>
+
+<To>Limenas Chersonisou</To>
+
+<Date>02/09/2025</Date>
+
+<Time>13:00</Time>
+
+<GatewayFrom>HER</GatewayFrom>
+
+<GatewayTo>Z2X</GatewayTo>
+
+<GatewayInfo>FR3815</GatewayInfo>
+
+<PickupDate>20250902</PickupDate>
+
+<PickupTime>13:00</PickupTime>
+
+</Journey1>
+
+<Journey2>
+
+<StartingPointType>RT</StartingPointType>
+
+<From>Limenas Chersonisou</From>
+
+<To>Heraklion Intl. Airport (HER)</To>
+
+<Date>09/09/2025</Date>
+
+<Time>09:30</Time>
+
+<GatewayFrom>Z2X</GatewayFrom>
+
+<GatewayTo>Z2X</GatewayTo>
+
+<GatewayInfo>FR3816</GatewayInfo>
+
+<PickupDate>20250909</PickupDate>
+
+<PickupTime>09:30</PickupTime>
+
+</Journey2>
+
+<SpecificLocation>Diamond Apts and Suites - Hersonissos</SpecificLocation>
+
+<AdditionalAddressInfo1>PETEINAKI STREET,10 - 70014 - Crete - Heraklio - Greece</AdditionalAddressInfo1>
+
+<AdditionalAddressInfo2></AdditionalAddressInfo2>
+
+<Passengers>2</Passengers>
+
+<Adults>2</Adults>
+
+<Children>0</Children>
+
+<Infants>0</Infants>
+
+<Children_Age></Children_Age>
+
+<Requests></Requests>
+
+<Price>64</Price>
+
+<Agency></Agency>
+
+<Extras>
+
+</Extras>
+
+</Booking>
+
+</P2PConfirmation>
+
