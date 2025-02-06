@@ -9,48 +9,49 @@ def convert_xml(input_xml):
     root = tree.getroot()
 
     booking = root.find(".//Booking")
-    transfers = ET.Element("transfers", MessageType="Request", FechaCreacion=booking.find("Booking_date").text, Count="1")
+    
+    transfers = ET.Element("transfers", MessageType="Request", FechaCreacion=booking.findtext("Booking_date", "N/A"), Count="1")
     transfer = ET.SubElement(transfers, "transfer")
 
     # Προσθήκη στοιχείων στο XML
     ET.SubElement(transfer, "result")
     ET.SubElement(transfer, "client").text = "HER"
-    ET.SubElement(transfer, "ttoo").text = booking.find("Company").text if booking.find("Company") is not None else "N/A"
+    ET.SubElement(transfer, "ttoo").text = booking.findtext("Company", "N/A")
     
     ET.SubElement(transfer, "brand")
     ET.SubElement(transfer, "carrier")
     
-    ET.SubElement(transfer, "serviceType").text = booking.find("ServiceType").text if booking.find("ServiceType") is not None else "N/A"
-    ET.SubElement(transfer, "flightCompanyCode").text = booking.find("FlightCompanyCode").text if booking.find("FlightCompanyCode") is not None else "N/A"
-    ET.SubElement(transfer, "flightNumber").text = booking.find("ArrivalFlightNumber").text if booking.find("ArrivalFlightNumber") is not None else "N/A"
-    ET.SubElement(transfer, "flightDate").text = booking.find("ArrivalDate").text if booking.find("ArrivalDate") is not None else "N/A"
-    ET.SubElement(transfer, "flightTime").text = booking.find("ArrivalTime").text if booking.find("ArrivalTime") is not None else "N/A"
-    ET.SubElement(transfer, "flightOrigin").text = booking.find("DepartureAirport").text if booking.find("DepartureAirport") is not None else "N/A"
-    ET.SubElement(transfer, "flightDestination").text = booking.find("ArrivalAirport").text if booking.find("ArrivalAirport") is not None else "N/A"
+    ET.SubElement(transfer, "serviceType").text = booking.findtext("TransferType", "N/A")
+    ET.SubElement(transfer, "flightCompanyCode").text = booking.findtext("ArrivalFlightNumber", "N/A")[:3]  # Εξαγωγή πρώτων 3 χαρακτήρων ως κωδικός
+    ET.SubElement(transfer, "flightNumber").text = booking.findtext("ArrivalFlightNumber", "N/A")[3:]  # Αριθμός πτήσης
+    ET.SubElement(transfer, "flightDate").text = booking.findtext("ArrivalDate", "N/A")
+    ET.SubElement(transfer, "flightTime").text = booking.findtext("ArrivalTime", "N/A") + ":00"
+    ET.SubElement(transfer, "flightOrigin").text = booking.findtext("ArrivalAirportFrom", "N/A")
+    ET.SubElement(transfer, "flightDestination").text = booking.findtext("ArrivalAirportTo", "N/A")
     
     ET.SubElement(transfer, "serviceCode")
-    ET.SubElement(transfer, "voucher").text = booking.find("VoucherNumber").text if booking.find("VoucherNumber") is not None else "N/A"
+    ET.SubElement(transfer, "voucher").text = booking.get("ref", "N/A")  # Διαβάζει το ref του Booking ως voucher
     
-    ET.SubElement(transfer, "paxName").text = booking.find("Customer_name").text if booking.find("Customer_name") is not None else "N/A"
+    ET.SubElement(transfer, "paxName").text = booking.findtext("Customer_name", "N/A")
     
     ET.SubElement(transfer, "arrDepCode")
-    ET.SubElement(transfer, "arrDepPhysicalArea").text = booking.find("arrDepPhysicalArea").text if booking.find("arrDepPhysicalArea") is not None else "N/A"
-    ET.SubElement(transfer, "arrDepName").text = booking.find("arrDepName").text if booking.find("arrDepName") is not None else "N/A"
+    ET.SubElement(transfer, "arrDepPhysicalArea").text = booking.findtext("DepartureLocFrom", "N/A")
+    ET.SubElement(transfer, "arrDepName").text = booking.findtext("SpecificLocation", "N/A")
     ET.SubElement(transfer, "arrOrder")
     ET.SubElement(transfer, "areaOrder")
 
-    ET.SubElement(transfer, "paxADT").text = booking.find("Adults").text if booking.find("Adults") is not None else "N/A"
-    ET.SubElement(transfer, "paxCHD").text = booking.find("Children").text if booking.find("Children") is not None else "N/A"
+    ET.SubElement(transfer, "paxADT").text = booking.findtext("Adults", "N/A")
+    ET.SubElement(transfer, "paxCHD").text = booking.findtext("Children", "N/A")
     ET.SubElement(transfer, "CHD_AGES")
-    ET.SubElement(transfer, "paxINF").text = booking.find("Infants").text if booking.find("Infants") is not None else "N/A"
+    ET.SubElement(transfer, "paxINF").text = booking.findtext("Infants", "N/A")
     
-    ET.SubElement(transfer, "vehicle").text = booking.find("VehicleType").text if booking.find("VehicleType") is not None else "N/A"
+    ET.SubElement(transfer, "vehicle").text = booking.findtext("Transportation_Unit", "N/A")
 
     ET.SubElement(transfer, "rep")
     ET.SubElement(transfer, "remarks")
     
-    ET.SubElement(transfer, "pickupDate").text = booking.find("DepartureDate").text if booking.find("DepartureDate") is not None else "N/A"
-    ET.SubElement(transfer, "pickupTime").text = booking.find("PickupTime").text if booking.find("PickupTime") is not None else "N/A"
+    ET.SubElement(transfer, "pickupDate").text = booking.findtext("DepartureDate", "N/A")
+    ET.SubElement(transfer, "pickupTime").text = booking.findtext("DepartureTime", "N/A") + ":00"
     
     ET.SubElement(transfer, "observations")
 
