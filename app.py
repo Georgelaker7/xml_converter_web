@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import xml.etree.ElementTree as ET
 import os
+import html  # <--- Προσθήκη της βιβλιοθήκης για διόρθωση των &amp; 
 
 app = Flask(__name__)
 
@@ -36,9 +37,10 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "arrDepCode")
     ET.SubElement(transfer, "arrDepPhysicalArea").text = booking.find("ArrivalLocTo").text if booking.find("ArrivalLocTo") is not None else "N/A"
 
-    # **Διορθωμένη γραμμή - Βάζει ΜΟΝΟ το όνομα του ξενοδοχείου και όχι όλη τη διεύθυνση**
+    # **Διόρθωση: Καθαρίζει τα `&amp;amp;` με τη `html.unescape()`**
     if booking.find("SpecificLocation") is not None:
         hotel_name = booking.find("SpecificLocation").text.split(",")[0]  # Παίρνει μόνο το πρώτο κομμάτι πριν το κόμμα
+        hotel_name = html.unescape(hotel_name)  # <--- Εδώ καθαρίζουμε το XML escaping
     else:
         hotel_name = "N/A"
     ET.SubElement(transfer, "arrDepName").text = hotel_name
